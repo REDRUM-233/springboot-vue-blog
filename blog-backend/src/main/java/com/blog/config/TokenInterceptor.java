@@ -19,20 +19,22 @@ public class TokenInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        // 跨域头
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type,token");
-
-        // 放行 OPTIONS
+        // 放行 OPTIONS（CORS 预检由 WebConfig 统一处理）
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
             return true;
         }
 
-        // 放行登录、用户列表
+        // 放行登录、注册
         String uri = request.getRequestURI();
-        if (uri.contains("/api/login") || uri.contains("/api/users")) {
+        if (uri.contains("/api/login") || uri.contains("/api/register")) {
+            return true;
+        }
+
+        // 公开 GET（文章、分类、标签、评论）
+        if ("GET".equalsIgnoreCase(request.getMethod()) &&
+            (uri.contains("/api/article") || uri.contains("/api/category") ||
+             uri.contains("/api/tag") || uri.contains("/api/comment"))) {
             return true;
         }
 
@@ -44,9 +46,14 @@ public class TokenInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        // 校验 token
+        // 校验 token，通过后将用户信息写入 request
         try {
-            jwtUtil.getUserId(token);
+            Long userId = jwtUtil.getUserId(token);
+            String role = jwtUtil.getRole(token);
+            String username = jwtUtil.getUsername(token);
+            request.setAttribute("userId", userId);
+            request.setAttribute("role", role);
+            request.setAttribute("username", username);
             return true;
         } catch (Exception e) {
             response.setContentType("application/json;charset=utf-8");

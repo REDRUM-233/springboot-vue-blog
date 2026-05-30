@@ -15,10 +15,8 @@ public class JwtUtil {
     private final SecretKey key;
     private final long expiration;
 
-    // 从配置文件读取密钥和过期时间
     public JwtUtil(@Value("${jwt.secret}") String secret,
                    @Value("${jwt.expiration}") long expiration) {
-        // HS256 要求密钥至少 256 bits（32 字节），不足则补 0
         byte[] keyBytes = new byte[32];
         byte[] secretBytes = secret.getBytes(StandardCharsets.UTF_8);
         System.arraycopy(secretBytes, 0, keyBytes, 0, Math.min(secretBytes.length, 32));
@@ -26,23 +24,38 @@ public class JwtUtil {
         this.expiration = expiration;
     }
 
-    // 1. 创建 token（把用户ID放进去）
-    public String createToken(Long userId) {
+    // 1. 创建 token（用户ID + 角色 + 用户名）
+    public String createToken(Long userId, String role, String username) {
         return Jwts.builder()
                 .subject(userId.toString())
+                .claim("role", role)
+                .claim("username", username)
                 .expiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(key)
                 .compact();
     }
 
-    // 2. 从 token 里取出用户ID
+    // 2. 取出用户ID
     public Long getUserId(String token) {
         String subject = Jwts.parser()
-                .verifyWith(key)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .getSubject();
+                .verifyWith(key).build()
+                .parseSignedClaims(token).getPayload().getSubject();
         return Long.parseLong(subject);
+    }
+
+    // 3. 取出角色
+    public String getRole(String token) {
+        return Jwts.parser()
+                .verifyWith(key).build()
+                .parseSignedClaims(token).getPayload()
+                .get("role", String.class);
+    }
+
+    // 4. 取出用户名
+    public String getUsername(String token) {
+        return Jwts.parser()
+                .verifyWith(key).build()
+                .parseSignedClaims(token).getPayload()
+                .get("username", String.class);
     }
 }

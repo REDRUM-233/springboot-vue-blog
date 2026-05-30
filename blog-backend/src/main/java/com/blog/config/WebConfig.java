@@ -17,7 +17,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(tokenInterceptor)
                 .addPathPatterns("/api/**")
-                .excludePathPatterns("/api/login"); // 放行登录接口
+                .excludePathPatterns("/api/login", "/api/register"); // 放行登录和注册
     }
     // CORS 全局配置
     @Override

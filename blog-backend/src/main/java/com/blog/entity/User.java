@@ -18,11 +18,11 @@ public class User {
     @NotBlank(message = "用户名不能为空")
     private String username;
 
-    // 只允许写入（接收请求），不允许读取（返回响应），防止密码哈希泄露
+    // 只允许写入，不允许返回给前端
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    private String nickname;
+    private String role;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 }

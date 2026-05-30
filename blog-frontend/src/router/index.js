@@ -1,12 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Login from '../views/Login.vue'
-// 这里改成 Home，不要再引 App.vue 了！
+import Register from '../views/Register.vue'
 import Home from '../views/Home.vue'
+import Articles from '../views/Articles.vue'
 
 const routes = [
     { path: '/login', component: Login },
-    // 这里也改成 Home
-    { path: '/', component: Home }
+    { path: '/register', component: Register },
+    { path: '/', component: Home },
+    { path: '/articles', component: Articles }
 ]
 
 const router = createRouter({
@@ -17,7 +19,7 @@ const router = createRouter({
 // 路由守卫：未登录跳转到登录页
 router.beforeEach((to, from, next) => {
     const token = localStorage.getItem('token')
-    if (to.path !== '/login' && !token) {
+    if (to.path !== '/login' && to.path !== '/register' && to.path !== '/articles' && !token) {
         next('/login')
     } else {
         next()
