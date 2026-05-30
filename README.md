@@ -5,11 +5,11 @@
 ## 功能
 
 - 用户注册/登录（JWT 认证）
-- 角色权限（管理员 / 普通用户）
-- 文章管理（发布、编辑、删除、分页、浏览量）
-- 评论系统（发表、删除）
+- 角色权限（管理员/普通用户）
+- 文章管理（发布/编辑/删除/分页/浏览量）
+- 评论系统（发表/删除）
 - 分类与标签管理
-- Redis 缓存（浏览量计数）
+- Redis 缓存
 
 ## 技术栈
 
@@ -21,11 +21,10 @@
 
 ## 快速开始
 
-1. 创建数据库并建表（或执行 `seed.sql`）
-2. 配置 `application-dev.yml` 中的数据库连接
-3. 启动 Redis
-4. 后端：`mvn spring-boot:run`
-5. 前端：`npm install && npm run dev`
+1. 创建 MySQL 数据库 `blog`，执行 `seed.sql` 建表
+2. 启动 Redis
+3. 配置 `application-dev.yml` 中的数据库连接
+4. 后端: `cd blog-backend && mvn spring-boot:run`
+5. 前端: `cd blog-frontend && npm install && npm run dev`
 6. 访问 `http://localhost:5173`
-
-默认管理员：数据库中手动将用户 `role` 字段改为 `admin`
+7. 默认管理员: 注册后在数据库中将 `role` 改为 `admin`
