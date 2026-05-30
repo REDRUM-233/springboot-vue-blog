@@ -27,5 +27,3 @@
 4. 后端：`mvn spring-boot:run`
 5. 前端：`npm install && npm run dev`
 6. 访问 `http://localhost:5173`
-
-默认管理员：数据库中手动将用户 `role` 字段改为 `admin`
