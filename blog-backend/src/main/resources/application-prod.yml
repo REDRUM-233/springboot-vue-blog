@@ -1,0 +1,17 @@
+# 生产环境配置
+# 激活方式：spring.profiles.active=prod
+# 所有敏感信息必须通过环境变量注入
+
+spring:
+  datasource:
+    username: ${DB_USERNAME}       # 必须设置，无默认值
+    password: ${DB_PASSWORD}       # 必须设置，无默认值
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl  # 生产不打印 SQL
+
+# JWT 配置（生产环境）
+jwt:
+  secret: ${JWT_SECRET}           # 必须设置，无默认值
+  expiration: 604800000
