@@ -21,13 +21,37 @@
 
 ## 快速开始
 
-1. 创建 MySQL 数据库 `blog`，执行 `seed.sql` 建表
+### 本地开发
+
+1. 创建 MySQL 数据库 `blog`，执行 `sql.txt`（建表 + 默认管理员）
 2. 启动 Redis
 3. 配置 `application-dev.yml` 中的数据库连接
-4. 后端: `cd blog-backend && mvn spring-boot:run`
-5. 前端: `cd blog-frontend && npm install && npm run dev`
+4. 后端：`cd blog-backend && mvn spring-boot:run`
+5. 前端：`cd blog-frontend && npm install && npm run dev`
 6. 访问 `http://localhost:5173`
-7. 默认管理员: 注册后在数据库中将 `role` 改为 `admin`
+7. 默认管理员：`admin` / `123`
+
+### Docker 部署
+
+```bash
+# 1. 打包
+cd blog-backend && mvn clean package -DskipTests
+cd ../blog-frontend && npm run build
+
+# 2. 一键启动（MySQL + Redis + 后端 + 前端）
+cd ..
+docker compose up -d --build
+
+# 3. 导入种子数据
+docker exec -i blog-mysql mysql -uroot -p123456 blog --default-character-set=utf8mb4 < sql.txt
+docker exec -i blog-mysql mysql -uroot -p123456 blog --default-character-set=utf8mb4 < seed.sql
+```
+
+Docker 前端：`http://localhost:9091`，管理员 `admin` / `123`
+
+本地开发（`8080`/`5173`）和 Docker（`9090`/`9091`）可同时运行，互不冲突。
+
+项目地址：[https://github.com/wksyybgk/springboot-vue-blog](https://github.com/wksyybgk/springboot-vue-blog)
 
 ## 效果截图
 
