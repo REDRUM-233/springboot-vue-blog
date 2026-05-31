@@ -51,7 +51,7 @@ Docker 前端：`http://localhost:9091`，管理员 `admin` / `123`
 
 本地开发（`8080`/`5173`）和 Docker（`9090`/`9091`）可同时运行，互不冲突。
 
-项目地址：[https://github.com/wksyybgk/springboot-vue-blog](https://github.com/wksyybgk/springboot-vue-blog)
+项目地址：[https://github.com/wksbgk/springboot-vue-blog](https://github.com/wksbgk/springboot-vue-blog)
 
 ## 效果截图
 
