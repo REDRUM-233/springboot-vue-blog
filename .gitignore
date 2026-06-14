@@ -40,3 +40,4 @@ Thumbs.db
 
 # Test artifacts
 test*.json
+.vscode/settings.json
